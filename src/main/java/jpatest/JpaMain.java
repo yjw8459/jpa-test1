@@ -25,6 +25,12 @@ public class JpaMain {
             //entityManager.persist(member);
             System.out.println(findMember.getId());
             System.out.println(findMember.getName());
+            //영속화하면 1차 캐시에 저장되고, 쓰기지연 SQL 저장소에 저장된다.
+            //commit 시점에 한꺼번에 저장된다.(flush)
+            entityManager.persist(new Member(150L, "A"));
+            entityManager.persist(new Member(151L, "B"));
+            System.out.println("==============");
+
             findMember.setName("ttt");  // 영속성 컨텍스트에 등록된 엔티티는 persist 없이 수정가능.
             tx.commit();
         }
