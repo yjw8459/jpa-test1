@@ -2,7 +2,9 @@ package jpatest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -10,8 +12,28 @@ public class JpaMain {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpatest");
         //EntityManager를 만들면 DB연결이 됨.
         EntityManager entityManager = emf.createEntityManager();
+        EntityTransaction tx = entityManager.getTransaction(); // Transaction이 있어야 Insert쿼리가 날아감
+        tx.begin();
+        try {
+            Member findMember = entityManager.find(Member.class, 1L);
 
-        entityManager.close();
+            // JPQL은 RDB 테이블을 대상으로 하는게 아닌, 추상화된 객체를 대상으로 조회한다.
+            List findMembers = entityManager.createQuery("select m from Member as m", Member.class)
+                    .setFirstResult(4)
+                    .setMaxResults(5)
+                    .getResultList();// Paging, DB에 맞게 방언 적용, Oracle : Rownum, MySQL : ...
+            //entityManager.persist(member);
+            System.out.println(findMember.getId());
+            System.out.println(findMember.getName());
+            findMember.setName("ttt");  // 영속성 컨텍스트에 등록된 엔티티는 persist 없이 수정가능.
+            tx.commit();
+        }
+        catch (Exception e){
+            tx.rollback();
+        }
+        finally {
+            entityManager.close();
+        }
         emf.close();
     }
 }
