@@ -32,6 +32,13 @@ public class JpaMain {
             System.out.println("==============");
 
             findMember.setName("ttt");  // 영속성 컨텍스트에 등록된 엔티티는 persist 없이 수정가능.
+            //준영속상태
+            entityManager.detach(findMember);   //영속성 컨텍스트에서 제외. UPDATE 쿼리가 날아가지 않는다.
+            entityManager.clear(); //영속성 컨텍스트 초기화, 영속 관리대상이 비워짐.
+            entityManager.close(); //영속성 컨텍스트 종료.
+
+            entityManager.persist(new Member(200L, "member200"));
+
             tx.commit();
         }
         catch (Exception e){
