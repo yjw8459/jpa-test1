@@ -16,7 +16,7 @@
             <property name="hibernate.use_sql_comments" value="true"/>
 <!--     버퍼링, 사이즈만큼 모아놨다가 한꺼번에 저장한다.       -->
             <property name="hibernate.jdbc.batch_size" value="10"/>
-<!--            <property name="hibernate.hbm2ddl.auto" value="create" />-->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
     </persistence-unit>
 </persistence>

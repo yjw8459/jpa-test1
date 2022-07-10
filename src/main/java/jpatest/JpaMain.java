@@ -7,6 +7,24 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
+    /**
+     * persist : 영속화
+     * remove : DELETE쿼리
+     * UPDATE : 영속화된 엔티티의 값을 변경하면(set) 변경감지를 통해 업데이트 쿼리가 자동 생성
+     * INSERT : 생성된 엔티티를 영속화하면 INSERT쿼리 자동 생성
+     * flush : 쓰기 지연 SQL 저장소에 모인 쿼리를 DB에 반영(동기화)
+     * ** 트랜잭션 안에서 수행해야 수정, 생성, 삭제 쿼리 생성 **
+     *
+     *
+     * 준영속
+     * detach : 영속화 엔티티를 영속성 컨텍스트에서 제외
+     * clear : 영속성 컨텍스트를 비운다.
+     * close : 영속성 컨텍스트를 종료
+     *
+     * JPQL
+     * SQL을 객체를 기준으로 작성.
+     * @param args
+     */
     public static void main(String[] args) {
         //persistence.xml의 persistence-unit name
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpatest");
@@ -29,6 +47,7 @@ public class JpaMain {
             //commit 시점에 한꺼번에 저장된다.(flush)
             entityManager.persist(new Member(150L, "A"));
             entityManager.persist(new Member(151L, "B"));
+            entityManager.remove(findMember);   // DELETE 쿼리
             System.out.println("==============");
 
             findMember.setName("ttt");  // 영속성 컨텍스트에 등록된 엔티티는 persist 없이 수정가능.
