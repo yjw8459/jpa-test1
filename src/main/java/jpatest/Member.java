@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 
 // 엔티티와 매핑할 테이블 지정, name을 따로 선언하지 않을 경우 클래스 이름을 따름
-@Table
+@Table(name = "memberTest")
 public class Member {
 
     //JPA는 리플렉션을 사용하기 때문에 기본 생성자가 있어야한다.
