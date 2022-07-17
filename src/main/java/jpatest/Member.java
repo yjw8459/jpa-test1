@@ -21,9 +21,19 @@ public class Member {
         this.username = name;
     }
     @Id
+    @Column(name = "member_id")
     private Long id;
     @Column(name = "name",length = 10, nullable = false, columnDefinition = "varchar(100) default 'EMPTY'")
     private String username; //@Column을 적지 않으면 변수명으로 매핑
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "locker_id")
+    private Locker locker;
+
     private Integer age;
     @Enumerated(EnumType.STRING)    //Enum 타입, Ordinal 사용 X
     private RoleType roleType;
